@@ -2,6 +2,9 @@ import streamlit as st
 import json
 import os
 
+from azure.storage.blob import BlobClient
+sas_token = "sv=2023-01-03&spr=https%2Chttp&st=2025-08-19T08%3A08%3A32Z&se=2025-08-20T08%3A08%3A32Z&skoid=3b3c6740-2dac-4874-ae17-538255627874&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2025-08-19T08%3A08%3A32Z&ske=2025-08-20T08%3A08%3A32Z&sks=b&skv=2023-01-03&sr=c&sp=rlf&sig=NLHIsiO%2FKis4FIbxEl7BrpiiMLoOpDdWSbLHW%2FvkU8w%3D"
+
 # ---------------------------
 # 页面配置
 # ---------------------------
@@ -12,7 +15,7 @@ st.set_page_config(page_title="音频数据可视化", layout="wide")
 # ---------------------------
 st.title("🎧 音频数据可视化工具")
 
-json_path = st.text_input("输入 JSON 文件路径", "/home/v-hanchenpei/code/data_process/visualization/data/filtered_large.json")
+json_path = st.text_input("输入 JSON 文件路径", "./visualization_libriheavy/data/filtered_large.json")
 
 @st.cache_data
 def load_data(file_path):
@@ -81,14 +84,13 @@ if data:
                 st.markdown(f"**energy:** {item.get('energy_cate', '-')}")
                 
                 st.text_area("Transcription", item.get("transcription", ""), height=80, key=f"transcription_{item['uid']}")
-
-                audio_path = base_path+item.get("audio_path", "")
-                if os.path.exists(audio_path):
-                    with open(audio_path, "rb") as f:
-                        audio_bytes = f.read()
-                    st.audio(audio_bytes, format="audio/wav")
-                else:
-                    st.warning("音频文件不存在")
+                url = f"https://msramcgblob.blob.core.windows.net/valle/v-hanchenpei/data/download/librilight/cases_and_punc/data/wav_segments/forced_align_wavs/{item.get("audio_path", "")}?{sas_token}"
+                try:
+                    blob = BlobClient.from_blob_url(url)
+                
+                    st.audio(blob.download_blob().readall(), format="audio/wav")
+                except Exception as e:
+                    st.warning("音频读取失败！")
 
                 st.markdown("---")
 else:
