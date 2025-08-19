@@ -95,7 +95,7 @@ import json
 
 # 原始 json 文件
 input_json = "/home/v-hanchenpei/valleblob/v-hanchenpei/data/download/librilight/cases_and_punc/data/wav_segments/batch_lists_new/filtered_mfa_large_info_all.json"
-output_json = "./visualization/data/filtered_large.json"
+output_json = "./visualization_libriheavy/data/filtered_large.json"
 
 with open(input_json, "r", encoding="utf-8") as f:
     raw_data = json.load(f)
