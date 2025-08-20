@@ -41,8 +41,8 @@ data = load_data(json_path)
 # 筛选功能
 # ---------------------------
 if data:
-    spk_list = sorted(set(item.get("speaker_id", "unknown") for item in data))
-    emo_list = sorted(set(item.get("emotion", "unknown") for item in data))
+    spk_list = sorted(set(item.get("speaker_id", "") for item in data))
+    emo_list = sorted(set(item.get("emotion", "") for item in data))
 
     st.sidebar.header("筛选条件")
     selected_spk = st.sidebar.multiselect("选择 Speaker", spk_list)
@@ -87,7 +87,6 @@ if data:
                 url = f"https://msramcgblob.blob.core.windows.net/valle/v-hanchenpei/data/download/librilight/cases_and_punc/data/wav_segments/forced_align_wavs/{item.get('audio_path', '')}?{sas_token}"
                 try:
                     blob = BlobClient.from_blob_url(url)
-                
                     st.audio(blob.download_blob().readall(), format="audio/wav")
                 except Exception as e:
                     st.warning("音频读取失败！")
