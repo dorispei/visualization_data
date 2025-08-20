@@ -3,7 +3,7 @@ import json
 import os
 
 from azure.storage.blob import BlobClient
-sas_token = r"sv=2023-01-03&spr=https%2Chttp&st=2025-08-19T08%3A08%3A32Z&se=2025-08-20T08%3A08%3A32Z&skoid=3b3c6740-2dac-4874-ae17-538255627874&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2025-08-19T08%3A08%3A32Z&ske=2025-08-20T08%3A08%3A32Z&sks=b&skv=2023-01-03&sr=c&sp=rlf&sig=NLHIsiO%2FKis4FIbxEl7BrpiiMLoOpDdWSbLHW%2FvkU8w%3D"
+sas_token = st.secrets["sas_token"]
 
 # ---------------------------
 # 页面配置
